@@ -13,7 +13,7 @@ function Pagination({charPerPage, totalCharacters, paginate, currentPage}) {
                 {pageNumber.map(number => (
                     
                     <li key={number} className={`page-item ${currentPage === number? 'active':''}`}>
-                        <a onClick={()=>paginate(number)} href="!#" className="page-link">
+                        <a onClick={()=>paginate(number)} href="" className="page-link">
                             {number}
                         </a>
                     </li>
