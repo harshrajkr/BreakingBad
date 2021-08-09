@@ -131,6 +131,21 @@ input[type='text'] {
   padding-bottom: 10px;
 }
 
+.card_back-info {
+  margin-top: 20px;
+}
+
+.card_back-info .card-subtitle {
+  margin: auto 0;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.card_back-info .card-subtitle strong {
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
 @media (max-width: 800px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);

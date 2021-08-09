@@ -1,55 +1,22 @@
-import axios from 'axios';
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import './App.css';
+import CharactersList from './Components/CharactersList';
 import Header from './Components/Header';
-import Search from './Components/Search';
-import Pagination from './Components/Pagination';
-import CardIntro from './Components/Card';
+import {Switch, Route} from 'react-router-dom'
+// import Pagination from './Components/Pagination';
+import Character from './Components/Character';
 
 function App() {
-  var baseUrl = 'https://www.breakingbadapi.com/api/characters';
-
-  const [char, setChar] = useState([])
-  const [isLoading, setisLoading] = useState([false])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [charPerPage] = useState(10)
-  const [search, setSearch] = useState('')
-
-  //Get current Characters 
-  const indexOfLastChar = currentPage * charPerPage;
-  const indexOfFirstChar = indexOfLastChar - charPerPage;
-  const currentChar = char.slice(indexOfFirstChar, indexOfLastChar);
-
-  useEffect(() => {
-    const fetchCharacters = async() => {
-      setisLoading(true)
-      const result = await axios(`${baseUrl}?name=${search}`);
-      setChar(result.data);
-      setisLoading(false)
-    }
-    fetchCharacters();
-  },[search,baseUrl])
-
-  //ChangePage
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   return (
-    <div className="container">
-      <Header/>
-      <Search 
-        searchQuery={(searchText)=>setSearch(searchText)}
-        />
-      <CardIntro 
-        isLoading={isLoading} 
-        char={currentChar}
-        />
-      <Pagination 
-        charPerPage={charPerPage} 
-        totalCharacters={char.length} 
-        paginate={paginate} 
-        currentPage={currentPage}
-        />
-    </div>
+    <>
+    <Header/>
+    <Switch>
+      <Route path='/' exact component={CharactersList} />
+      <Route path='/character/:id' exact component={Character} />
+      {/* <Route path='/search/:search' exact component={CharactersList}/> */}
+      <Route path='/page/:number' exact component={CharactersList}/>
+    </Switch>
+    </>
   );
 }
 

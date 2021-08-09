@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 function Pagination({charPerPage, totalCharacters, paginate, currentPage}) {
     const pageNumber = [];
@@ -13,9 +14,9 @@ function Pagination({charPerPage, totalCharacters, paginate, currentPage}) {
                 {pageNumber.map(number => (
                     
                     <li key={number} className={`page-item ${currentPage === number? 'active':''}`}>
-                        <a onClick={()=>paginate(number)} href="" className="page-link">
+                        <Link onClick={()=>paginate(number)} to={`/page/${number}`} className="page-link">
                             {number}
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>
