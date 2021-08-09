@@ -8,17 +8,14 @@ function Character({ match }) {
     const [quotes, setQuotes] = useState({})
 
     useEffect(() => {
-        fetchCharacter()
-        console.log(char)
-    }, [])
-
-    const fetchCharacter = async () => {
+        const fetchCharacter = async () => {
         const res = await axios(`${url}characters/${match.params.id}`)
         setChar(res.data[0])
         const quote = await axios(`${url}quotes/${match.params.id}`)
         setQuotes(quote.data[0])
-        console.log(quotes)
     }
+        fetchCharacter()
+    }, [char,match.params.id])
 
     return (
         <div className="container">
@@ -43,7 +40,7 @@ function Character({ match }) {
                 <h1>Quote</h1>
                 <div className="quotes-container">
                     <i>{quotes.quote}</i>
-                    <img src="https://img.icons8.com/ios/50/000000/quote-right.png"/>
+                    <img src="https://img.icons8.com/ios/50/000000/quote-right.png" alt="Quotes"/>
                 </div>
             </div>}
         </div>

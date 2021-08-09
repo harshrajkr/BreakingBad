@@ -3,7 +3,6 @@ import axios from 'axios';
 import Search from './Search';
 import Pagination from './Pagination';
 import CardIntro from './Card';
-import { Link } from 'react-router-dom'
 
 function CharactersList() {
     var baseUrl = 'https://www.breakingbadapi.com/api/characters';
@@ -20,15 +19,14 @@ function CharactersList() {
     const currentChar = char.slice(indexOfFirstChar, indexOfLastChar);
 
     useEffect(() => {
+        const fetchCharacters = async () => {
+            setisLoading(true)
+            const result = await axios(`${baseUrl}?name=${search}`);
+            setChar(result.data);
+            setisLoading(false)
+        }
         fetchCharacters();
     }, [search, baseUrl])
-
-    const fetchCharacters = async () => {
-        setisLoading(true)
-        const result = await axios(`${baseUrl}?name=${search}`);
-        setChar(result.data);
-        setisLoading(false)
-    }
 
     //ChangePage
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
