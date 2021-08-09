@@ -1,32 +1,37 @@
 import React from 'react'
+import {
+  Card, CardImg, CardImgOverlay,
+  CardTitle, CardSubtitle
+} from 'reactstrap';
+import loader from './../Images/loader.gif'
 
-function Card({char}) {
-    return (
-    <div className='card'>
+function RenderCard({ char }) {
+  return (
+    <Card key={char.char_id} className='card' >
       <div className='card-inner'>
-        <div className='card-front'>
-          <img src={char.img} alt='' />
-        </div>
-        <div className='card-back'>
-          <h1>{char.name}</h1>
-          <ul>
-            <li>
-              <strong>Actor Name:</strong> {char.portrayed}
-            </li>
-            <li>
-              <strong>Nickname:</strong> {char.nickname}
-            </li>
-            <li>
-              <strong>Birthday:</strong> {char.birthday}
-            </li>
-            <li>
-              <strong>Status:</strong> {char.status}
-            </li>
-          </ul>
-        </div>
+        <CardImg src={char.img} alt={char.name} className='card-front' />
+        <CardImgOverlay className='card-back'>
+          <CardTitle tag="h2">{char.name}</CardTitle>
+          <hr />
+          <CardSubtitle><strong>Actor Name: </strong>{char.portrayed}</CardSubtitle>
+          <CardSubtitle><strong>Occupation:</strong> {char.occupation.map((value) => value + ", ")}</CardSubtitle>
+          <CardSubtitle><strong>Date of Birth:</strong> {char.birthday}</CardSubtitle>
+          <CardSubtitle><strong>Status:</strong> {char.status}</CardSubtitle>
+        </CardImgOverlay>
       </div>
-    </div>
+    </Card>
   )
 }
 
-export default Card
+function CardIntro({ char, isLoading }) {
+  return isLoading ? (
+    <img src={loader} className='spinner' alt='Loading' />
+  ) : (
+    <section className="cards">
+      {char.map(items => (
+        <RenderCard key={items.char_id} char={items} />
+      ))}
+    </section>)
+}
+
+export default CardIntro

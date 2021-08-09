@@ -2,33 +2,53 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import './App.css';
 import Header from './Components/Header';
-import Character from './Components/Character';
 import Search from './Components/Search';
-import ReactPaginate from 'react-paginate';
+import Pagination from './Components/Pagination';
+import CardIntro from './Components/Card';
 
 function App() {
-  const [offset, setOffset] = useState(0)
-  const [perPage, setPerPage] = useState(10)
-  const [pageCount, setPageCount] = useState(0)
-  const [characters, setChar] = useState([])
-  const [isLoading, setisLoading] = useState([true])
+  var baseUrl = 'https://www.breakingbadapi.com/api/characters';
+
+  const [char, setChar] = useState([])
+  const [isLoading, setisLoading] = useState([false])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [charPerPage] = useState(10)
   const [search, setSearch] = useState('')
 
+  //Get current Characters 
+  const indexOfLastChar = currentPage * charPerPage;
+  const indexOfFirstChar = indexOfLastChar - charPerPage;
+  const currentChar = char.slice(indexOfFirstChar, indexOfLastChar);
+
   useEffect(() => {
-    const fetchItems = async () => {
-      const res = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${search}`)
-      // console.log(result.data)
-      setChar(res.data)
+    const fetchCharacters = async() => {
+      setisLoading(true)
+      const result = await axios(`${baseUrl}?name=${search}`);
+      setChar(result.data);
       setisLoading(false)
     }
-    fetchItems();
-  },[search])
+    fetchCharacters();
+  },[search,baseUrl])
+
+  //ChangePage
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container">
       <Header/>
-      <Search searchQuery={(searchText)=>setSearch(searchText)}/>
-      <Character isLoading={isLoading} characters={characters}/>
+      <Search 
+        searchQuery={(searchText)=>setSearch(searchText)}
+        />
+      <CardIntro 
+        isLoading={isLoading} 
+        char={currentChar}
+        />
+      <Pagination 
+        charPerPage={charPerPage} 
+        totalCharacters={char.length} 
+        paginate={paginate} 
+        currentPage={currentPage}
+        />
     </div>
   );
 }
